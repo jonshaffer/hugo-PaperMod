@@ -7,7 +7,7 @@
         {{- if hugo.IsProduction | or (eq site.Params.env "production") }}
         <span>&copy; {{ now.Year }} <a href="{{ "" | absLangURL }}">{{ site.Title }}</a></span>
         {{- else }}
-        <span>&copy; {{ now.Year }} <a href="{{ "" | absLangURL }}/index.html">{{ site.Title }}</a></span>
+        <span>&copy; {{ now.Year }} <a href="{{ "" | absLangURL }}index.html">{{ site.Title }}</a></span>
         {{- end }}
         {{- end }}
         {{- print " · "}}

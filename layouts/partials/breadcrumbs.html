@@ -6,7 +6,7 @@
     {{- if hugo.IsProduction | or (eq site.Params.env "production") }}
     <a href="{{ "" | absLangURL }}">{{ i18n "home" | default "Home" }}</a>
     {{- else }}
-    <a href="{{ "" | absLangURL }}/index.html">{{ i18n "home" | default "Home" }}</a>
+    <a href="{{ "" | absLangURL }}index.html">{{ i18n "home" | default "Home" }}</a>
     {{- end }}
     {{- $scratch := newScratch }}
     {{- range $index, $element := split $lang_url "/" }}
