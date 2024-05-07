@@ -44,7 +44,12 @@
         <div class="logo">
             {{- $label_text := (site.Params.label.text | default site.Title) }}
             {{- if site.Title }}
+
+            {{- if hugo.IsProduction | or (eq site.Params.env "production") }}
             <a href="{{ "" | absLangURL }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
+            {{- else }}
+            <a href="{{ "" | absLangURL }}/index.html" accesskey="h" title="{{ $label_text }} (Alt + H)"></a>
+            {{- end }}
                 {{- if site.Params.label.icon }}
                 {{- $img := resources.Get site.Params.label.icon }}
                 {{- if $img }}
