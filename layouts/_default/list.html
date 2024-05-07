@@ -93,7 +93,7 @@
   {{- if hugo.IsProduction | or (eq site.Params.env "production") }}
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
   {{- else }}
-  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}.html"></a>
+  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}index.html"></a>
   {{- end }}
 </article>
 {{- end }}
