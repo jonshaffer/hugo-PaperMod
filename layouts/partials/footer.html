@@ -5,7 +5,7 @@
         <span>{{ site.Copyright | markdownify }}</span>
         {{- else }}
         <span>
-            &copy; {{ now.Year }} <a href="{{ "" | absLangURL }}">{{ site.Title }}</a> {{ if isset .Site.Data.version "number" }}v{{ .Site.Data.version.number }}{{ end }}
+            &copy; {{ now.Year }} <a href="{{ "" | absLangURL }}">{{ site.Title }}</a> {{ if isset .Site.Data.version "version" }}v{{ .Site.Data.version.version }}{{ end }}
         </span>
         {{- end }}
         {{- print " · "}}
