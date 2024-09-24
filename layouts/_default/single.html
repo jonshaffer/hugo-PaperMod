@@ -19,6 +19,11 @@
       {{ .Description }}
     </div>
     {{- end }}
+
+    {{ if .Store.Get "hasEcharts" }}
+      <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+    {{ end }}
+
     {{- if not (.Param "hideMeta") }}
     <div class="post-meta">
       {{- partial "post_meta.html" . -}}
