@@ -46,8 +46,12 @@
   if (!window.echartsList) window.echartsList = [];
 
   const checkIsDark = () => {
+    let bodyDark;
     const prefTheme = localStorage.getItem("pref-theme");
-    return prefTheme === "dark";
+    if (typeof prefTheme !== "string") {
+      bodyDark = document.body.className.includes("dark");
+    }
+    return !!bodyDark ? bodyDark : prefTheme === "dark";
   }
 
   // Specify the configuration items and data for the chart
@@ -86,9 +90,7 @@
     }
   };
 
-  setTimeout(() => {
-    createChart(checkIsDark());
-  }, 50);
+  createChart(checkIsDark());
 </script>
 
 {{ .Page.Store.Set "hasEcharts" true }}
