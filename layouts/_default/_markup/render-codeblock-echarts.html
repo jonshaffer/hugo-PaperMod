@@ -5,7 +5,7 @@
 {{ $lightTheme := or site.Params.echarts.lightTheme "" }}
 {{ $darkTheme := or site.Params.echarts.darkTheme "" }}
 
-<div id="{{ $id }}" style="min-width: {{ $width }}; height: {{ $height }}; {{ $styles }}"></div>
+<div id="{{ $id }}" style="width: {{ $width }}; height: {{ $height }}; {{ $styles }}"></div>
 
 {{ if isset site.Data "echarts_themes" }}
 <script type="text/javascript">
@@ -47,44 +47,33 @@
 
   const checkIsDark = () => {
     const prefTheme = localStorage.getItem("pref-theme");
-    console.log(prefTheme, prefTheme === "dark");
     return prefTheme === "dark";
   }
 
   // Specify the configuration items and data for the chart
   const createChart = (isDark) => {
     var initTheme = isDark ? darkThemeName : lightThemeName;
-    console.log("creating chart with theme", isDark, initTheme);
     chart = echarts.init(document.getElementById("{{ $id }}"), initTheme);
 
     {{ .Inner | safeJS }}
 
-    option = mergeDeep(option, {
-      calendar: {
-        yearLabel: {
-          color: isDark ? "#ffffff" : "#000000"
-        },
-        dayLabel: {
-          color: isDark ? "#ffffff" : "#000000"
-        },
-        monthLabel: {
-          color: isDark ? "#ffffff" : "#000000"
-        }
-      }
-    });
+    if (optionLight && optionDark) {
+      option = mergeDeep(option, isDark ? optionDark : optionLight);
+    }
 
     chart.setOption(option);
     window.echartsList.push(chart);
   }
 
+  const recreateChart = () => {
+    if (typeof chart !== "undefined") echarts.dispose(chart);
+    const localIsDark = checkIsDark();
+    createChart(localIsDark);
+  }
+
   const darkModeCallback = (mutationRecord) => {
-    console.log("darkModeCallback", mutationRecord[0]);
     if (mutationRecord[0].attributeName === "class") {
-      console.log(chart);
-      if (typeof chart !== "undefined") echarts.dispose(chart);
-      const localIsDark = checkIsDark();
-      console.log("localIsDark", localIsDark);
-      createChart(localIsDark);
+      recreateChart();
     }
   }
 
