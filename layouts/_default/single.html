@@ -67,8 +67,54 @@
   {{- end }}
   {{ if .Store.Get "hasMermaid" }}
     <script type="module">
-      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
-      mermaid.initialize({ startOnLoad: true });
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
+      window.mermaid = mermaid;
+      function getMermaidConfig() {
+        return {
+          theme: document.body.classList.contains("dark") ? "dark" : "neutral",
+          startOnLoad: false,
+          flowchart: {
+            curve: "linear",
+            defaultRenderer: "elk",
+            width: "100vw",
+          },
+        };
+      };
+
+      async function renderMermaid() {
+        const config = getMermaidConfig();
+        console.info("mermaid init config", config);
+        // Re-initialize with the current theme
+        mermaid.initialize(config);
+
+        // Reset previously rendered diagrams
+        document.querySelectorAll(".mermaid").forEach((el) => {
+          const code = el.dataset.source || el.textContent;
+          el.dataset.source = code; // store original source for re-rendering
+          el.innerHTML = code; // reset to raw code before re-running
+          delete el.dataset.processed; // reset the 'processed' data attribute
+        });
+
+        // Run Mermaid rendering
+        await mermaid.run({
+          querySelector: ".mermaid",
+        });
+      }
+
+      // Initial render
+      renderMermaid();
+
+      // Observe theme changes via body class
+      const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.attributeName === "class") {
+            renderMermaid();
+            break;
+          }
+        }
+      });
+
+      observer.observe(document.body, { attributes: true });
     </script>
   {{ end }}
 </article>
