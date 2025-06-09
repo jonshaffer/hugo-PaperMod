@@ -1,0 +1,29 @@
+/* Example CSS for your stylesheet */
+.series-box {
+  margin-top: 2.5em;
+  padding: 1.5em;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--entry);
+}
+
+.series-box h4 {
+  margin-top: 0;
+  margin-bottom: 1em;
+  font-size: 1.1em;
+  border-bottom: 1px solid var(--teriary);
+  padding-bottom: 0.5em;
+}
+
+.series-box a {
+  text-decoration: underline;
+}
+
+.series-box ol {
+  margin: 0;
+  padding-left: 1.5em;
+}
+
+.series-box li {
+  margin-bottom: 0.5em;
+}

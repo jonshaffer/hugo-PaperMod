@@ -1,0 +1,50 @@
+{{/*
+  layouts/partials/series.html
+
+  This partial template checks if a page is part of a series.
+  If it is, it lists all other pages in the same series, sorted by date.
+*/}}
+
+{{/* Store the current page's context in a variable */}}
+{{ $currentPage := . }}
+
+{{/* Check if the 'series' parameter is set in the front matter */}}
+{{ with .Params.series }}
+  {{/* The 'with' action sets the context to the value of .Params.series */}}
+  {{ range . }} {{/* Range over the series array (even if there's just one) */}}
+    {{ $seriesName := . }} {{/* Store the name of the series, e.g., "getting-started-with-go" */}}
+
+    {{/*
+      Find the taxonomy page for this specific series.
+      .Site.Taxonomies.series gets all series. 'index' finds the one matching $seriesName.
+    */}}
+    {{ with index $.Site.Taxonomies.series ($seriesName | urlize) }}
+      <aside class="series-box">
+        <h4>Part of the series: <a href="/series/{{ $seriesName | urlize }}" title="{{ $seriesName }}">{{ $seriesName }}</a></h4>
+        <ol>
+          {{/*
+            .Pages lists all pages in this taxonomy term.
+            .ByDate sorts them by the 'date' field in their front matter.
+          */}}
+          {{ range .Pages.ByWeight }}
+            <li>
+              {{/* Check if the page in the loop is the current page we're viewing */}}
+              {{ if eq .Permalink $currentPage.Permalink }}
+                {{ .Title }} <em>(You are here)</em>
+              {{ else }}
+                <a href="{{ .Permalink }}" title="{{ .Title }}">
+                  {{ .Title }}
+                </a>
+              {{ end }}
+                <div>
+                  <em>
+                    {{ .Summary }}
+                  </em>
+                </div>
+            </li>
+          {{ end }}
+        </ol>
+      </aside>
+    {{ end }}
+  {{ end }}
+{{ end }}
